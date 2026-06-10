@@ -8,6 +8,7 @@
 非侵入式的 [XXL-JOB](https://github.com/xuxueli/xxl-job) Prometheus exporter。
 **直接以唯讀帳號讀取 xxl-job 的 MySQL/MariaDB**，完全不需要修改 xxl-job-admin、執行器或任何既有設定，也不依賴 admin 的登入 API（避免版本升級時 API 變動造成監控中斷）。
 
+- xxl-job-admin **原生不提供 Prometheus metrics**：即使手動加入 Spring Actuator + Micrometer，也只有通用 JVM / HTTP 指標，沒有任何排程業務資訊（執行結果、心跳、卡住偵測等）
 - 支援 XXL-JOB **2.2.x / 2.3.x / 2.4.x / 3.x**（核心表結構皆相容，`xxl_job_log_report` 不存在時自動略過）
 - 狀態判定與 xxl-job-admin「調度日誌」頁完全一致：
   - `success`：`handle_code = 200`

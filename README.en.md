@@ -8,6 +8,7 @@
 A non-invasive Prometheus exporter for [XXL-JOB](https://github.com/xuxueli/xxl-job).
 **Reads metrics directly from xxl-job's MySQL/MariaDB using a read-only account** — no changes to xxl-job-admin, executors, or any existing configuration required. It does not depend on the admin login API, so monitoring is never broken by xxl-job version upgrades.
 
+- **xxl-job-admin has no native Prometheus metrics**: even with Spring Actuator + Micrometer added manually, you only get generic JVM / HTTP metrics — no scheduling business data (execution results, heartbeats, stuck-job detection, etc.)
 - Supports XXL-JOB **2.2.x / 2.3.x / 2.4.x / 3.x** (core schema is compatible; `xxl_job_log_report` is skipped gracefully if absent)
 - Job status follows the exact same semantics as the xxl-job-admin "Scheduling Log" page:
   - `success`: `handle_code = 200`
