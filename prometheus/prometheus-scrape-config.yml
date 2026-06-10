@@ -1,0 +1,14 @@
+# Prometheus 抓取設定範例（合併進你既有的 prometheus.yml）
+# 注意：job 名稱需與 alerts/xxl_job_alerts.yml 中 up{job="xxl-job-exporter"} 一致。
+
+scrape_configs:
+  - job_name: "xxl-job-exporter"
+    scrape_interval: 30s        # 不需要太密集；exporter 每次 scrape 會查 DB
+    scrape_timeout: 15s         # 大於 exporter 的 DB read timeout (預設 10s)
+    static_configs:
+      - targets: ["xxl-job-exporter:9588"]
+        labels:
+          xxl_job_env: "prod"   # 多套 xxl-job 時用 label 區分（每套 DB 各跑一個 exporter）
+
+rule_files:
+  - "alerts/xxl_job_alerts.yml"

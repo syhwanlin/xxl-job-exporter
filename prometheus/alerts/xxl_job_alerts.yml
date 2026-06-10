@@ -1,0 +1,132 @@
+# XXL-JOB 告警規則
+# 放入 Prometheus rule_files，或對應改寫成 PrometheusRule（見 kubernetes/prometheusrule.yaml）
+# 門檻值請依你的任務特性調整。
+
+groups:
+  - name: xxl-job-exporter
+    rules:
+      # ---------- Exporter / 基礎設施 ----------
+      - alert: XxlJobExporterDown
+        expr: up{job="xxl-job-exporter"} == 0
+        for: 3m
+        labels:
+          severity: critical
+        annotations:
+          summary: "xxl-job exporter 無法被 Prometheus 抓取"
+          description: "Prometheus 抓不到 {{ $labels.instance }} 的 /metrics 已超過 3 分鐘。"
+
+      - alert: XxlJobDatabaseUnreachable
+        expr: xxl_job_up == 0
+        for: 3m
+        labels:
+          severity: critical
+        annotations:
+          summary: "exporter 連不上 xxl-job 資料庫"
+          description: "exporter ({{ $labels.instance }}) 查詢 xxl-job DB 失敗已超過 3 分鐘，所有任務指標都會缺失。"
+
+      - alert: XxlJobScrapeSlow
+        expr: xxl_job_scrape_duration_seconds > 10
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "xxl-job exporter 收集耗時過長"
+          description: "單次收集耗時 {{ $value | printf \"%.1f\" }}s。請檢查 xxl_job_log 是否過大（搭配 XxlJobLogTableTooLarge），或調小 EXPORTER_LOOKBACK。"
+
+  - name: xxl-job-executors
+    rules:
+      # ---------- 執行器 ----------
+      - alert: XxlJobNoOnlineExecutor
+        # 自動註冊的執行器群組完全沒有存活心跳
+        expr: xxl_job_executor_online_count == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "執行器群組 {{ $labels.app_name }} 沒有任何在線實例"
+          description: "該群組所有實例的心跳都已超過 90 秒，任務將無法被派發執行。"
+
+      - alert: XxlJobExecutorInstanceLost
+        # 在線數量低於註冊數量（部分實例失聯），通常代表某些 Pod/VM 掛了
+        expr: xxl_job_executor_online_count < xxl_job_executor_registered_count
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "執行器群組 {{ $labels.app_name }} 有實例失聯"
+          description: "在線 {{ $value }} 台，低於註冊數。請確認執行器實例狀態（失聯實例會在 admin 清理 registry 後消失）。"
+
+  - name: xxl-job-jobs
+    rules:
+      # ---------- 任務執行結果 ----------
+      - alert: XxlJobExecutionFailed
+        # 近 5 分鐘有任何失敗（window 標籤需與 EXPORTER_WINDOWS 對應）
+        expr: xxl_job_job_executions{status="fail", window="5m"} > 0
+        for: 0m
+        labels:
+          severity: warning
+        annotations:
+          summary: "任務 [{{ $labels.job_desc }}] (id={{ $labels.job_id }}) 近 5 分鐘有失敗"
+          description: "群組 {{ $labels.app_name }}，5 分鐘內失敗 {{ $value }} 次。請到 xxl-job-admin 調度日誌查看 handle_msg。"
+
+      - alert: XxlJobHighFailureRate
+        # 近 1 小時失敗率超過 50%（至少有 3 次執行才判斷，避免低頻任務誤報）
+        expr: |
+          (
+            xxl_job_job_executions{status="fail", window="1h"}
+            /
+            (xxl_job_job_executions{status="fail", window="1h"} + xxl_job_job_executions{status="success", window="1h"})
+          ) > 0.5
+          and
+          (xxl_job_job_executions{status="fail", window="1h"} + xxl_job_job_executions{status="success", window="1h"}) >= 3
+        for: 10m
+        labels:
+          severity: critical
+        annotations:
+          summary: "任務 [{{ $labels.job_desc }}] 近 1 小時失敗率過高"
+          description: "失敗率 {{ $value | humanizePercentage }}（群組 {{ $labels.app_name }}, job_id={{ $labels.job_id }}）。"
+
+      - alert: XxlJobStuckRunning
+        # 有執行卡在 running 超過 1 小時（依任務正常時長調整；可用 job_id 拆不同門檻）
+        expr: xxl_job_job_longest_running_seconds > 3600
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "任務 [{{ $labels.job_desc }}] 疑似卡住"
+          description: "最久的一筆 running 執行已持續 {{ $value | humanizeDuration }}，可能是執行器當掉或回調(callback)遺失。"
+
+      - alert: XxlJobMissedSchedule
+        # 任務狀態為啟用，但下次調度時間已過去超過 5 分鐘仍未被更新 → 調度器異常或卡住
+        expr: |
+          xxl_job_job_trigger_status == 1
+          and on (job_id, app_name)
+          (time() - xxl_job_job_trigger_next_timestamp_seconds > 300)
+          and on (job_id, app_name)
+          (xxl_job_job_trigger_next_timestamp_seconds > 0)
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "任務 [{{ $labels.job_desc }}] 錯過排程"
+          description: "trigger_next_time 已過期超過 5 分鐘但未被調度更新，請檢查 xxl-job-admin 調度執行緒與 DB 鎖（xxl_job_lock）。"
+
+      # （範例，預設註解）每日批次型任務超過 26 小時沒有成功 → 視任務頻率自行啟用
+      # - alert: XxlJobNoRecentSuccess
+      #   expr: time() - xxl_job_job_last_success_timestamp_seconds{job_id="2"} > 93600
+      #   for: 10m
+      #   labels:
+      #     severity: critical
+      #   annotations:
+      #     summary: "任務 [{{ $labels.job_desc }}] 超過 26 小時沒有成功紀錄"
+
+  - name: xxl-job-housekeeping
+    rules:
+      - alert: XxlJobLogTableTooLarge
+        expr: xxl_job_log_table_rows_estimate > 5000000
+        for: 30m
+        labels:
+          severity: warning
+        annotations:
+          summary: "xxl_job_log 資料量過大（約 {{ $value | humanize }} 筆）"
+          description: "請確認 xxl-job-admin 的 logretentiondays 日誌清理設定有正常運作，過大的 log 表會拖慢 admin 與 exporter。"

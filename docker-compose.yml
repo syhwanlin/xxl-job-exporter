@@ -1,0 +1,15 @@
+# 最小可用部署：只跑 exporter（連到你既有的 xxl-job 資料庫）
+# 使用方式：cp .env.example .env，填好 DB 連線後 docker compose up -d
+services:
+  xxl-job-exporter:
+    build: .
+    # 若已推到內部 registry，改用：
+    # image: your-registry/xxl-job-exporter:1.0.0
+    container_name: xxl-job-exporter
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "9588:9588"
+    # 與 xxl-job DB 在同一台主機時可加：
+    # extra_hosts:
+    #   - "host.docker.internal:host-gateway"

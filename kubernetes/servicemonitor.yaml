@@ -1,0 +1,78 @@
+# Prometheus Operator 使用者適用（kube-prometheus-stack）
+# 注意：label（如 release: kube-prometheus-stack）需符合你 Prometheus 的 serviceMonitorSelector / ruleSelector。
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: xxl-job-exporter
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/name: xxl-job-exporter
+    release: kube-prometheus-stack
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: xxl-job-exporter
+  endpoints:
+    - port: metrics
+      interval: 30s
+      scrapeTimeout: 15s
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: xxl-job-alerts
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/name: xxl-job-exporter
+    release: kube-prometheus-stack
+spec:
+  groups:
+    - name: xxl-job-core
+      rules:
+        - alert: XxlJobDatabaseUnreachable
+          expr: xxl_job_up == 0
+          for: 3m
+          labels:
+            severity: critical
+          annotations:
+            summary: "exporter 連不上 xxl-job 資料庫"
+        - alert: XxlJobNoOnlineExecutor
+          expr: xxl_job_executor_online_count == 0
+          for: 2m
+          labels:
+            severity: critical
+          annotations:
+            summary: "執行器群組 {{ $labels.app_name }} 沒有任何在線實例"
+        - alert: XxlJobExecutionFailed
+          expr: xxl_job_job_executions{status="fail", window="5m"} > 0
+          labels:
+            severity: warning
+          annotations:
+            summary: "任務 [{{ $labels.job_desc }}] (id={{ $labels.job_id }}) 近 5 分鐘有失敗"
+        - alert: XxlJobStuckRunning
+          expr: xxl_job_job_longest_running_seconds > 3600
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "任務 [{{ $labels.job_desc }}] 疑似卡住（{{ $value | humanizeDuration }}）"
+        - alert: XxlJobMissedSchedule
+          expr: |
+            xxl_job_job_trigger_status == 1
+            and on (job_id, app_name)
+            (time() - xxl_job_job_trigger_next_timestamp_seconds > 300)
+            and on (job_id, app_name)
+            (xxl_job_job_trigger_next_timestamp_seconds > 0)
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "任務 [{{ $labels.job_desc }}] 錯過排程"
+        - alert: XxlJobLogTableTooLarge
+          expr: xxl_job_log_table_rows_estimate > 5000000
+          for: 30m
+          labels:
+            severity: warning
+          annotations:
+            summary: "xxl_job_log 資料量過大，請檢查日誌清理設定"
