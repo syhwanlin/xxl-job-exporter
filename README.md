@@ -1,5 +1,7 @@
 # XXL-JOB Prometheus Exporter
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 非侵入式的 [XXL-JOB](https://github.com/xuxueli/xxl-job) Prometheus exporter。
 **直接以唯讀帳號讀取 xxl-job 的 MySQL/MariaDB**，完全不需要修改 xxl-job-admin、執行器或任何既有設定，也不依賴 admin 的登入 API（避免版本升級時 API 變動造成監控中斷）。
 
