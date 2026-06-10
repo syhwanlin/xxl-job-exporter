@@ -74,6 +74,35 @@ python exporter.py
 - 將 `prometheus/prometheus-scrape-config.yml` 的 scrape job 合併進你的設定，並載入 `alerts/xxl_job_alerts.yml`
 - Grafana → Dashboards → Import → 上傳 `grafana/xxl_job_dashboard.json`
 
+## 本機 Demo（完整環境）
+
+不需要現有的 XXL-Job 資料庫，一行指令即可啟動完整示範環境：
+
+```bash
+docker compose -f docker-compose.demo.yml up
+```
+
+啟動後可開啟：
+
+| 服務 | URL | 說明 |
+|---|---|---|
+| Exporter metrics | http://localhost:9588/metrics | Prometheus 指標 |
+| Exporter 首頁 | http://localhost:9588/ | 端點導覽 |
+| XXL-Job Admin UI | http://localhost:8080/xxl-job-admin | 帳號 `admin` / `123456` |
+
+包含的服務：
+- **MySQL 8.0** — 初始化 xxl-job schema
+- **xxl-job-admin 2.4.1** — 官方 Admin UI
+- **job-simulator** — 自動建立 3 個執行器群組（order / payment / report）、7 個 Job，初始補入 200 筆跨越 24 小時的歷史 log，之後每 5 秒持續寫入新的 success / fail / running 記錄
+- **xxl-job-exporter** — 本 exporter，連到 demo 專用的唯讀 DB 帳號
+
+> **Apple Silicon（M 系列）** 使用者：xxl-job-admin 為 amd64 image，透過 Rosetta 執行，啟動約需 30–60 秒。
+
+停止並清除環境：
+```bash
+docker compose -f docker-compose.demo.yml down -v
+```
+
 ## HTTP 端點
 
 | 端點 | 用途 |
