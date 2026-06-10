@@ -1,0 +1,76 @@
+# Demo environment: MySQL + XXL-Job Admin + Job Simulator + Exporter
+# Usage: docker compose -f docker-compose.demo.yml up
+#
+# URLs:
+#   http://localhost:8080/xxl-job-admin  → admin UI  (admin / 123456)
+#   http://localhost:9588/metrics         → Prometheus metrics
+#   http://localhost:9588/                → exporter landing page
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: xxl-demo-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: xxljob
+    volumes:
+      - ./demo/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - xxl-demo-mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-pxxljob"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  xxl-job-admin:
+    image: xuxueli/xxl-job-admin:2.4.1
+    container_name: xxl-demo-admin
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      PARAMS: >-
+        --spring.datasource.url=jdbc:mysql://mysql:3306/xxl_job?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
+        --spring.datasource.username=root
+        --spring.datasource.password=xxljob
+        --xxl.job.accessToken=
+    ports:
+      - "8080:8080"
+
+  job-simulator:
+    build:
+      context: ./demo
+      dockerfile: Dockerfile.simulator
+    container_name: xxl-demo-simulator
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      DB_HOST: mysql
+      DB_PORT: "3306"
+      DB_USER: root
+      DB_PASSWORD: xxljob
+      DB_NAME: xxl_job
+
+  xxl-job-exporter:
+    build: .
+    container_name: xxl-demo-exporter
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      XXL_JOB_DB_HOST: mysql
+      XXL_JOB_DB_PORT: "3306"
+      XXL_JOB_DB_USER: xxl_job_exporter
+      XXL_JOB_DB_PASSWORD: exporter_pass
+      XXL_JOB_DB_NAME: xxl_job
+      EXPORTER_WINDOWS: 5m,1h,24h
+      EXPORTER_LOOKBACK: 7d
+    ports:
+      - "9588:9588"
+
+volumes:
+  xxl-demo-mysql:
