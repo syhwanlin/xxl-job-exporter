@@ -1,15 +1,7 @@
-# xxl-job-exporter — Kubernetes 部署（Deployment + Service + Secret）
-# GitOps 友善：Secret 建議改由 SealedSecret / ExternalSecret 管理。
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: xxl-job-exporter-db
-  namespace: monitoring
-type: Opaque
-stringData:
-  # exporter 透過 XXL_JOB_DB_PASSWORD_FILE 讀取，不會出現在環境變數中
-  db-password: "CHANGE_ME"
+# xxl-job-exporter — Kubernetes 部署（Deployment + Service）
+# Secret 定義已拆至 secret.yaml，請先套用：
+#   kubectl apply -f kubernetes/secret.yaml
+#   kubectl apply -f kubernetes/deployment.yaml
 ---
 apiVersion: apps/v1
 kind: Deployment
