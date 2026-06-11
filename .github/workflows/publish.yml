@@ -48,17 +48,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      # Docker Hub 的 overview 同步成 README.en.md，short description 一併更新。
-      # 需要 DOCKERHUB_TOKEN 具備 Read & Write 權限。
-      - name: Update Docker Hub description
-        uses: peter-evans/dockerhub-description@v4
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-          repository: syhwanlin/xxl-job-exporter
-          readme-filepath: ./README.en.md
-          short-description: "Non-invasive Prometheus exporter for XXL-JOB (reads MySQL/MariaDB directly, read-only)."
-
       # 依 tag 自動建立 GitHub Release，release notes 由 PR / commit 自動產生
       # （分類規則見 .github/release.yml）。
       - name: Create GitHub Release
