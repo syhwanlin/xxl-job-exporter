@@ -37,7 +37,7 @@ from prometheus_client.core import (
 )
 from prometheus_client.exposition import generate_latest
 
-VERSION = "1.0.0"
+VERSION = "1.0.2"
 
 # --------------------------------------------------------------------------- #
 # Configuration
