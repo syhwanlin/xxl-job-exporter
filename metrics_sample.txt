@@ -20,78 +20,78 @@ xxl_job_executor_heartbeat_age_seconds{address="http://10.0.1.10:9999/",app_name
 xxl_job_executor_heartbeat_age_seconds{address="http://10.0.1.11:9999/",app_name="hr-batch-executor"} 302.0
 # HELP xxl_job_job_trigger_status Job schedule status from xxl_job_info (1 = running/enabled, 0 = stopped).
 # TYPE xxl_job_job_trigger_status gauge
-xxl_job_job_trigger_status{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="å“¡å·¥è³‡æ–™åŒæ­¥",job_id="1",schedule_type="CRON"} 1.0
-xxl_job_job_trigger_status{app_name="hr-batch-executor",handler="attendanceCalcHandler",job_desc="å‡ºå‹¤è¨ˆç®—",job_id="2",schedule_type="CRON"} 1.0
-xxl_job_job_trigger_status{app_name="report-executor",handler="monthlyReportHandler",job_desc="æœˆå ±ç”¢å‡º",job_id="3",schedule_type="CRON"} 0.0
+xxl_job_job_trigger_status{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="員工資料同步",job_id="1",schedule_type="CRON"} 1.0
+xxl_job_job_trigger_status{app_name="hr-batch-executor",handler="attendanceCalcHandler",job_desc="出勤計算",job_id="2",schedule_type="CRON"} 1.0
+xxl_job_job_trigger_status{app_name="report-executor",handler="monthlyReportHandler",job_desc="月報產出",job_id="3",schedule_type="CRON"} 0.0
 # HELP xxl_job_job_trigger_last_timestamp_seconds Unix timestamp of the job's last schedule time (0 if never triggered).
 # TYPE xxl_job_job_trigger_last_timestamp_seconds gauge
-xxl_job_job_trigger_last_timestamp_seconds{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="å“¡å·¥è³‡æ–™åŒæ­¥",job_id="1"} 1.781105421e+09
-xxl_job_job_trigger_last_timestamp_seconds{app_name="hr-batch-executor",handler="attendanceCalcHandler",job_desc="å‡ºå‹¤è¨ˆç®—",job_id="2"} 1.781102121e+09
-xxl_job_job_trigger_last_timestamp_seconds{app_name="report-executor",handler="monthlyReportHandler",job_desc="æœˆå ±ç”¢å‡º",job_id="3"} 0.0
+xxl_job_job_trigger_last_timestamp_seconds{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="員工資料同步",job_id="1"} 1.781105421e+09
+xxl_job_job_trigger_last_timestamp_seconds{app_name="hr-batch-executor",handler="attendanceCalcHandler",job_desc="出勤計算",job_id="2"} 1.781102121e+09
+xxl_job_job_trigger_last_timestamp_seconds{app_name="report-executor",handler="monthlyReportHandler",job_desc="月報產出",job_id="3"} 0.0
 # HELP xxl_job_job_trigger_next_timestamp_seconds Unix timestamp of the job's next scheduled time (0 if not scheduled).
 # TYPE xxl_job_job_trigger_next_timestamp_seconds gauge
-xxl_job_job_trigger_next_timestamp_seconds{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="å“¡å·¥è³‡æ–™åŒæ­¥",job_id="1"} 1.781106021e+09
-xxl_job_job_trigger_next_timestamp_seconds{app_name="hr-batch-executor",handler="attendanceCalcHandler",job_desc="å‡ºå‹¤è¨ˆç®—",job_id="2"} 1.781105121e+09
-xxl_job_job_trigger_next_timestamp_seconds{app_name="report-executor",handler="monthlyReportHandler",job_desc="æœˆå ±ç”¢å‡º",job_id="3"} 0.0
+xxl_job_job_trigger_next_timestamp_seconds{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="員工資料同步",job_id="1"} 1.781106021e+09
+xxl_job_job_trigger_next_timestamp_seconds{app_name="hr-batch-executor",handler="attendanceCalcHandler",job_desc="出勤計算",job_id="2"} 1.781105121e+09
+xxl_job_job_trigger_next_timestamp_seconds{app_name="report-executor",handler="monthlyReportHandler",job_desc="月報產出",job_id="3"} 0.0
 # HELP xxl_job_jobs Number of jobs per executor group and schedule status.
 # TYPE xxl_job_jobs gauge
 xxl_job_jobs{app_name="hr-batch-executor",trigger_status="1"} 2.0
 xxl_job_jobs{app_name="report-executor",trigger_status="0"} 1.0
 # HELP xxl_job_job_executions Number of job executions per status within a trailing time window (status follows xxl-job-admin log page semantics).
 # TYPE xxl_job_job_executions gauge
-xxl_job_job_executions{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="å“¡å·¥è³‡æ–™åŒæ­¥",job_id="1",status="success",window="5m"} 1.0
-xxl_job_job_executions{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="å“¡å·¥è³‡æ–™åŒæ­¥",job_id="1",status="fail",window="5m"} 0.0
-xxl_job_job_executions{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="å“¡å·¥è³‡æ–™åŒæ­¥",job_id="1",status="running",window="5m"} 0.0
-xxl_job_job_executions{app_name="hr-batch-executor",handler="attendanceCalcHandler",job_desc="å‡ºå‹¤è¨ˆç®—",job_id="2",status="success",window="5m"} 0.0
-xxl_job_job_executions{app_name="hr-batch-executor",handler="attendanceCalcHandler",job_desc="å‡ºå‹¤è¨ˆç®—",job_id="2",status="fail",window="5m"} 1.0
-xxl_job_job_executions{app_name="hr-batch-executor",handler="attendanceCalcHandler",job_desc="å‡ºå‹¤è¨ˆç®—",job_id="2",status="running",window="5m"} 0.0
-xxl_job_job_executions{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="å“¡å·¥è³‡æ–™åŒæ­¥",job_id="1",status="success",window="1h"} 2.0
-xxl_job_job_executions{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="å“¡å·¥è³‡æ–™åŒæ­¥",job_id="1",status="fail",window="1h"} 0.0
-xxl_job_job_executions{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="å“¡å·¥è³‡æ–™åŒæ­¥",job_id="1",status="running",window="1h"} 1.0
-xxl_job_job_executions{app_name="hr-batch-executor",handler="attendanceCalcHandler",job_desc="å‡ºå‹¤è¨ˆç®—",job_id="2",status="success",window="1h"} 0.0
-xxl_job_job_executions{app_name="hr-batch-executor",handler="attendanceCalcHandler",job_desc="å‡ºå‹¤è¨ˆç®—",job_id="2",status="fail",window="1h"} 1.0
-xxl_job_job_executions{app_name="hr-batch-executor",handler="attendanceCalcHandler",job_desc="å‡ºå‹¤è¨ˆç®—",job_id="2",status="running",window="1h"} 0.0
+xxl_job_job_executions{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="員工資料同步",job_id="1",status="success",window="5m"} 1.0
+xxl_job_job_executions{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="員工資料同步",job_id="1",status="fail",window="5m"} 0.0
+xxl_job_job_executions{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="員工資料同步",job_id="1",status="running",window="5m"} 0.0
+xxl_job_job_executions{app_name="hr-batch-executor",handler="attendanceCalcHandler",job_desc="出勤計算",job_id="2",status="success",window="5m"} 0.0
+xxl_job_job_executions{app_name="hr-batch-executor",handler="attendanceCalcHandler",job_desc="出勤計算",job_id="2",status="fail",window="5m"} 1.0
+xxl_job_job_executions{app_name="hr-batch-executor",handler="attendanceCalcHandler",job_desc="出勤計算",job_id="2",status="running",window="5m"} 0.0
+xxl_job_job_executions{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="員工資料同步",job_id="1",status="success",window="1h"} 2.0
+xxl_job_job_executions{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="員工資料同步",job_id="1",status="fail",window="1h"} 0.0
+xxl_job_job_executions{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="員工資料同步",job_id="1",status="running",window="1h"} 1.0
+xxl_job_job_executions{app_name="hr-batch-executor",handler="attendanceCalcHandler",job_desc="出勤計算",job_id="2",status="success",window="1h"} 0.0
+xxl_job_job_executions{app_name="hr-batch-executor",handler="attendanceCalcHandler",job_desc="出勤計算",job_id="2",status="fail",window="1h"} 1.0
+xxl_job_job_executions{app_name="hr-batch-executor",handler="attendanceCalcHandler",job_desc="出勤計算",job_id="2",status="running",window="1h"} 0.0
 xxl_job_job_executions{app_name="hr-batch-executor",handler="",job_desc="(deleted)",job_id="99",status="success",window="1h"} 0.0
 xxl_job_job_executions{app_name="hr-batch-executor",handler="",job_desc="(deleted)",job_id="99",status="fail",window="1h"} 1.0
 xxl_job_job_executions{app_name="hr-batch-executor",handler="",job_desc="(deleted)",job_id="99",status="running",window="1h"} 0.0
-xxl_job_job_executions{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="å“¡å·¥è³‡æ–™åŒæ­¥",job_id="1",status="success",window="24h"} 2.0
-xxl_job_job_executions{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="å“¡å·¥è³‡æ–™åŒæ­¥",job_id="1",status="fail",window="24h"} 0.0
-xxl_job_job_executions{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="å“¡å·¥è³‡æ–™åŒæ­¥",job_id="1",status="running",window="24h"} 1.0
-xxl_job_job_executions{app_name="hr-batch-executor",handler="attendanceCalcHandler",job_desc="å‡ºå‹¤è¨ˆç®—",job_id="2",status="success",window="24h"} 0.0
-xxl_job_job_executions{app_name="hr-batch-executor",handler="attendanceCalcHandler",job_desc="å‡ºå‹¤è¨ˆç®—",job_id="2",status="fail",window="24h"} 2.0
-xxl_job_job_executions{app_name="hr-batch-executor",handler="attendanceCalcHandler",job_desc="å‡ºå‹¤è¨ˆç®—",job_id="2",status="running",window="24h"} 0.0
-xxl_job_job_executions{app_name="report-executor",handler="monthlyReportHandler",job_desc="æœˆå ±ç”¢å‡º",job_id="3",status="success",window="24h"} 1.0
-xxl_job_job_executions{app_name="report-executor",handler="monthlyReportHandler",job_desc="æœˆå ±ç”¢å‡º",job_id="3",status="fail",window="24h"} 0.0
-xxl_job_job_executions{app_name="report-executor",handler="monthlyReportHandler",job_desc="æœˆå ±ç”¢å‡º",job_id="3",status="running",window="24h"} 0.0
+xxl_job_job_executions{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="員工資料同步",job_id="1",status="success",window="24h"} 2.0
+xxl_job_job_executions{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="員工資料同步",job_id="1",status="fail",window="24h"} 0.0
+xxl_job_job_executions{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="員工資料同步",job_id="1",status="running",window="24h"} 1.0
+xxl_job_job_executions{app_name="hr-batch-executor",handler="attendanceCalcHandler",job_desc="出勤計算",job_id="2",status="success",window="24h"} 0.0
+xxl_job_job_executions{app_name="hr-batch-executor",handler="attendanceCalcHandler",job_desc="出勤計算",job_id="2",status="fail",window="24h"} 2.0
+xxl_job_job_executions{app_name="hr-batch-executor",handler="attendanceCalcHandler",job_desc="出勤計算",job_id="2",status="running",window="24h"} 0.0
+xxl_job_job_executions{app_name="report-executor",handler="monthlyReportHandler",job_desc="月報產出",job_id="3",status="success",window="24h"} 1.0
+xxl_job_job_executions{app_name="report-executor",handler="monthlyReportHandler",job_desc="月報產出",job_id="3",status="fail",window="24h"} 0.0
+xxl_job_job_executions{app_name="report-executor",handler="monthlyReportHandler",job_desc="月報產出",job_id="3",status="running",window="24h"} 0.0
 xxl_job_job_executions{app_name="hr-batch-executor",handler="",job_desc="(deleted)",job_id="99",status="success",window="24h"} 0.0
 xxl_job_job_executions{app_name="hr-batch-executor",handler="",job_desc="(deleted)",job_id="99",status="fail",window="24h"} 1.0
 xxl_job_job_executions{app_name="hr-batch-executor",handler="",job_desc="(deleted)",job_id="99",status="running",window="24h"} 0.0
 # HELP xxl_job_job_duration_seconds_avg Average duration (handle_time - trigger_time) of successful executions in the window.
 # TYPE xxl_job_job_duration_seconds_avg gauge
-xxl_job_job_duration_seconds_avg{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="å“¡å·¥è³‡æ–™åŒæ­¥",job_id="1",window="5m"} 60.0
-xxl_job_job_duration_seconds_avg{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="å“¡å·¥è³‡æ–™åŒæ­¥",job_id="1",window="1h"} 60.0
-xxl_job_job_duration_seconds_avg{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="å“¡å·¥è³‡æ–™åŒæ­¥",job_id="1",window="24h"} 60.0
-xxl_job_job_duration_seconds_avg{app_name="report-executor",handler="monthlyReportHandler",job_desc="æœˆå ±ç”¢å‡º",job_id="3",window="24h"} 3600.0
+xxl_job_job_duration_seconds_avg{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="員工資料同步",job_id="1",window="5m"} 60.0
+xxl_job_job_duration_seconds_avg{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="員工資料同步",job_id="1",window="1h"} 60.0
+xxl_job_job_duration_seconds_avg{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="員工資料同步",job_id="1",window="24h"} 60.0
+xxl_job_job_duration_seconds_avg{app_name="report-executor",handler="monthlyReportHandler",job_desc="月報產出",job_id="3",window="24h"} 3600.0
 # HELP xxl_job_job_duration_seconds_max Maximum duration of successful executions in the window.
 # TYPE xxl_job_job_duration_seconds_max gauge
-xxl_job_job_duration_seconds_max{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="å“¡å·¥è³‡æ–™åŒæ­¥",job_id="1",window="5m"} 60.0
-xxl_job_job_duration_seconds_max{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="å“¡å·¥è³‡æ–™åŒæ­¥",job_id="1",window="1h"} 60.0
-xxl_job_job_duration_seconds_max{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="å“¡å·¥è³‡æ–™åŒæ­¥",job_id="1",window="24h"} 60.0
-xxl_job_job_duration_seconds_max{app_name="report-executor",handler="monthlyReportHandler",job_desc="æœˆå ±ç”¢å‡º",job_id="3",window="24h"} 3600.0
+xxl_job_job_duration_seconds_max{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="員工資料同步",job_id="1",window="5m"} 60.0
+xxl_job_job_duration_seconds_max{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="員工資料同步",job_id="1",window="1h"} 60.0
+xxl_job_job_duration_seconds_max{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="員工資料同步",job_id="1",window="24h"} 60.0
+xxl_job_job_duration_seconds_max{app_name="report-executor",handler="monthlyReportHandler",job_desc="月報產出",job_id="3",window="24h"} 3600.0
 # HELP xxl_job_job_last_success_timestamp_seconds Unix timestamp of the job's most recent successful execution (scanned within the last 604800s).
 # TYPE xxl_job_job_last_success_timestamp_seconds gauge
-xxl_job_job_last_success_timestamp_seconds{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="å“¡å·¥è³‡æ–™åŒæ­¥",job_id="1"} 1.781105661774118e+09
-xxl_job_job_last_success_timestamp_seconds{app_name="report-executor",handler="monthlyReportHandler",job_desc="æœˆå ±ç”¢å‡º",job_id="3"} 1.781037321774118e+09
+xxl_job_job_last_success_timestamp_seconds{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="員工資料同步",job_id="1"} 1.781105661774118e+09
+xxl_job_job_last_success_timestamp_seconds{app_name="report-executor",handler="monthlyReportHandler",job_desc="月報產出",job_id="3"} 1.781037321774118e+09
 # HELP xxl_job_job_last_fail_timestamp_seconds Unix timestamp of the job's most recent failed execution (scanned within the last 604800s).
 # TYPE xxl_job_job_last_fail_timestamp_seconds gauge
-xxl_job_job_last_fail_timestamp_seconds{app_name="hr-batch-executor",handler="attendanceCalcHandler",job_desc="å‡ºå‹¤è¨ˆç®—",job_id="2"} 1.781105601774118e+09
+xxl_job_job_last_fail_timestamp_seconds{app_name="hr-batch-executor",handler="attendanceCalcHandler",job_desc="出勤計算",job_id="2"} 1.781105601774118e+09
 xxl_job_job_last_fail_timestamp_seconds{app_name="hr-batch-executor",handler="",job_desc="(deleted)",job_id="99"} 1.781103981774118e+09
 # HELP xxl_job_job_running_executions Executions currently in 'running' state (triggered, no handle result yet).
 # TYPE xxl_job_job_running_executions gauge
-xxl_job_job_running_executions{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="å“¡å·¥è³‡æ–™åŒæ­¥",job_id="1"} 1.0
+xxl_job_job_running_executions{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="員工資料同步",job_id="1"} 1.0
 # HELP xxl_job_job_longest_running_seconds Age of the oldest still-running execution of this job (stuck-job detection).
 # TYPE xxl_job_job_longest_running_seconds gauge
-xxl_job_job_longest_running_seconds{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="å“¡å·¥è³‡æ–™åŒæ­¥",job_id="1"} 722.0
+xxl_job_job_longest_running_seconds{app_name="hr-batch-executor",handler="employeeSyncHandler",job_desc="員工資料同步",job_id="1"} 722.0
 # HELP xxl_job_today_executions Today's execution counts as maintained by xxl-job-admin's log report.
 # TYPE xxl_job_today_executions gauge
 xxl_job_today_executions{status="running"} 1.0
