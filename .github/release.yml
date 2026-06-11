@@ -1,0 +1,33 @@
+# GitHub 自動產生 Release Notes 的分類規則
+# 由 publish.yml 在推送 v* tag 時透過 generate_release_notes 套用。
+changelog:
+  exclude:
+    labels:
+      - ignore-for-release
+    authors:
+      - dependabot
+  categories:
+    - title: 🚀 新功能 / Features
+      labels:
+        - feature
+        - enhancement
+    - title: 🐛 修正 / Bug Fixes
+      labels:
+        - bug
+        - fix
+    - title: 📊 指標 / 告警 (Metrics & Alerts)
+      labels:
+        - metrics
+        - alerts
+    - title: 📝 文件 / Docs
+      labels:
+        - documentation
+        - docs
+    - title: 🔧 維運 / CI / 其他
+      labels:
+        - ci
+        - chore
+        - refactor
+    - title: 其他變更 / Other Changes
+      labels:
+        - "*"
